@@ -1,0 +1,33 @@
+pixelcloud-nginx-proxy:
+  image: pixelfordinner/nginx
+  container_name: pixelcloud-nginx_proxy
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - "./volumes/conf.d:/etc/nginx/conf.d:ro"
+    - "./volumes/vhost.d:/etc/nginx/vhost.d:ro"
+    - "./volumes/certs:/etc/nginx/certs:ro"
+    - "/usr/share/nginx/html"
+pixelcloud-docker-gen:
+  image: pixelfordinner/docker-gen
+  container_name: pixelcloud-docker_gen
+  volumes:
+    - "/var/run/docker.sock:/tmp/docker.sock:ro"
+    - "./data/templates:/etc/docker-gen/templates:ro"
+    - "./volumes/conf.d:/etc/nginx/conf.d"
+  volumes_from:
+    - pixelcloud-nginx-proxy
+  environment:
+    - ENTRYPOINT_ARGS=-notify-sighup pixelcloud-nginx_proxy -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+    - DOCKER_GEN_TARGET
+pixelcloud-lets-encrypt:
+  image: pixelfordinner/nginx-proxy-letsencrypt
+  volumes_from:
+    - pixelcloud-docker-gen
+  volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    - "./volumes/vhost.d:/etc/nginx/vhost.d"
+    - "./volumes/certs:/etc/nginx/certs"
+  environment:
+    - ACME_CA_URI=https://acme-staging.api.letsencrypt.org/directory
