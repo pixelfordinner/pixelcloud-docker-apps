@@ -14,3 +14,4 @@ composer.lock
 .idea/
 *.cache
 
+volumes/conf.d/*
