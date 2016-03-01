@@ -28,8 +28,9 @@ services:
       - DOCKER_GEN_TARGET
   pixelcloud-lets-encrypt:
     image: pixelfordinner/nginx-proxy-letsencrypt
+    container_name: pixelcloud-lets_encrypt
     volumes_from:
-      - pixelcloud-docker-gen
+      - pixelcloud-docker_gen
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./volumes/vhost.d:/etc/nginx/vhost.d"
@@ -40,4 +41,4 @@ services:
 networks:
   proxy-tier:
     external:
-      name: __proxy-tier
+      name: nginx-proxy

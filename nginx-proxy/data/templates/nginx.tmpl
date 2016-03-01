@@ -69,6 +69,13 @@ upstream {{ $host }} {
     {{ $addrLen := len $value.Addresses }}
     {{ $network := index $value.Networks 0 }}
 
+    {{/* If a network is named nginx-proxy, we use its IP */}}
+    {{ range $i, $match := $value.Networks}}
+        {{ if eq $match.Name "nginx-proxy" }}
+            {{ $network := $match }}
+        {{ end }}
+    {{ end }}
+
     {{/* If only 1 port exposed, use that */}}
     {{ if eq $addrLen 1 }}
         {{ with $address := index $value.Addresses 0 }}
