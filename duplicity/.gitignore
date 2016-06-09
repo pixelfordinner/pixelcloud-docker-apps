@@ -1,0 +1,4 @@
+volumes/duplicity/*
+!volumes/duplicity/.gitkeep
+tasks/conf/*
+!tasks/conf/settings.example.sh
