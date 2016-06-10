@@ -1,7 +1,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Get settings
-source ${DIR}/inc/settings.sh
+source ${DIR}/conf/settings.sh
 
 for client_dir in ${source_dir}/*/; do
     client_name=$(basename ${client_dir})

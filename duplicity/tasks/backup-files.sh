@@ -1,7 +1,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Get settings
-source ${DIR}/inc/settings.sh
+source ${DIR}/conf/settings.sh
 
 # Usage backup-files incremental|full
 
