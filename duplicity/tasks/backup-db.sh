@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Get running php containers and have wp-cli make a backup.
 containers=$(docker ps -q -f name='-php')
