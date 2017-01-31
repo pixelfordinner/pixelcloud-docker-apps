@@ -1,0 +1,20 @@
+### Miscellaneous
+.Spotlight-V100
+.Trashes
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+
+### IDE
+.idea/
+
+### nginx-proxy
+volumes/certs/*
+!volumes/certs/.gitkeep
+
+volumes/conf.d/*
+!volumes/conf.d/.gitkeep
+
+volumes/vhost.d/*
+!volumes/vhost.d/.gitkeep
