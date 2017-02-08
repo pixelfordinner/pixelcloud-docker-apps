@@ -18,7 +18,9 @@ services:
   docker-gen:
     image: jwilder/docker-gen:0.7.3
     container_name: pixelcloud-nginx_proxy-docker_gen
-    restart: unless-stopped
+    restart: always
+    depends_on:
+      - nginx
     volumes_from:
       - nginx
     volumes:
@@ -32,6 +34,9 @@ services:
     image: jrcs/letsencrypt-nginx-proxy-companion:v1.4
     container_name: pixelcloud-nginx_proxy-lets_encrypt
     restart: unless-stopped
+    depends_on:
+      - nginx
+      - docker-gen
     volumes_from:
       - nginx
     volumes:

@@ -155,6 +155,13 @@ server {
 	listen 80 {{ $default_server }};
 	listen [::]:80 {{ $default_server }};
 	access_log /var/log/nginx/access.log vhost;
+
+	{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
+	include {{ printf "/etc/nginx/vhost.d/%s" $host }};
+	{{ else if (exists "/etc/nginx/vhost.d/default") }}
+	include /etc/nginx/vhost.d/default;
+	{{ end }}
+
 	return 301 https://$host$request_uri;
 }
 {{ end }}
@@ -211,6 +218,13 @@ server {
 		listen 80 {{ $default_server }};
 		listen [::]:80 {{ $default_server }};
 		access_log /var/log/nginx/access.log vhost;
+
+		{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
+		include {{ printf "/etc/nginx/vhost.d/%s" $host }};
+		{{ else if (exists "/etc/nginx/vhost.d/default") }}
+		include /etc/nginx/vhost.d/default;
+		{{ end }}
+
 		return 301 https://{{$host}}$request_uri;
 }
 
