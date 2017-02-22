@@ -4,7 +4,7 @@ services:
   nginx:
     image: pixelfordinner/nginx
     container_name: pixelcloud-nginx_proxy-nginx
-    restart: always
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
@@ -18,7 +18,7 @@ services:
   docker-gen:
     image: jwilder/docker-gen:0.7.3
     container_name: pixelcloud-nginx_proxy-docker_gen
-    restart: always
+    restart: unless-stopped
     depends_on:
       - nginx
     volumes_from:
@@ -33,7 +33,7 @@ services:
   lets-encrypt-companion:
     image: jrcs/letsencrypt-nginx-proxy-companion:v1.4
     container_name: pixelcloud-nginx_proxy-lets_encrypt
-    restart: always
+    restart: unless-stopped
     depends_on:
       - nginx
       - docker-gen
