@@ -15,10 +15,9 @@ for client_dir in ${source_dir}/*/; do
         echo "> ${project_name} -> [${full_backups}] -> ${bucket_dest}..."
         docker run --rm --user $UID \
                       -e "PASSPHRASE=${passphrase}" \
-                      -v "${DIR}/../volumes/duplicity:/home/duplicity" \
+                      -v "${DIR}/../volumes/app:/mnt/app" \
                       --name pixelcloud-duplicity \
                       pixelfordinner/duplicity \
-                      duplicity remove-all-but-n-full --allow-source-mismatch ${full_backups} --force ${bucket_dest}
+                      remove-all-but-n-full --allow-source-mismatch ${full_backups} --force ${bucket_dest}
     done
 done
-

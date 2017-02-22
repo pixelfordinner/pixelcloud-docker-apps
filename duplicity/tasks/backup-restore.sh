@@ -14,9 +14,8 @@ mkdir -p $3/$1/$2
 echo "Restoring ${bucket_dest} -> $3/$1/$2"
 docker run --rm --user $UID \
                       -e "PASSPHRASE=${passphrase}" \
-                      -v "${DIR}/../volumes/duplicity:/home/duplicity" \
-                      -v $3:/data \
+                      -v "${DIR}/../volumes/app:/mnt/app" \
+                      -v $3:/mnt/data \
                       --name pixelcloud-duplicity \
                       pixelfordinner/duplicity \
-                      duplicity restore --allow-source-mismatch ${bucket_dest} /data/$1/$2
-
+                      restore --allow-source-mismatch ${bucket_dest} /mnt/data/$1/$2

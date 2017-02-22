@@ -18,13 +18,12 @@ for client_dir in ${source_dir}/*/; do
 
         docker run --rm --user $UID \
                       -e "PASSPHRASE=${passphrase}" \
-                      -v "${DIR}/../volumes/duplicity:/home/duplicity" \
-                      -v ${source_dir}:/data:ro \
+                      -v "${DIR}/../volumes/app:/mnt/app" \
+                      -v ${source_dir}:/mnt/data:ro \
                       --name pixelcloud-duplicity \
                       pixelfordinner/duplicity \
-                      duplicity $1 --allow-source-mismatch /data/${client_name}/${project_name} ${bucket_dest}
+                      $1 --allow-source-mismatch --archive-dir=/mnt/app /mnt/data/${client_name}/${project_name} ${bucket_dest}
 
         echo "> ${project_name} -> ${bucket_dest} = Done."
     done
 done
-
