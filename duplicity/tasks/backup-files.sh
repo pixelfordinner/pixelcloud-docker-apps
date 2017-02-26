@@ -16,7 +16,7 @@ for client_dir in ${source_dir}/*/; do
         bucket_dest=${bucket}/${client_name}/${project_name}
         echo "> ${project_name} -> ${bucket_dest}..."
 
-        docker run --rm --user $UID \
+        docker run --rm --user $UID --cpuset-cpus="0" \
                       -e "PASSPHRASE=${passphrase}" \
                       -v "${DIR}/../volumes/app:/mnt/app" \
                       -v ${source_dir}:/mnt/data:ro \

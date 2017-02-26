@@ -12,7 +12,7 @@ bucket_dest=${bucket}/$1/$2
 mkdir -p $3/$1/$2
 
 echo "Restoring ${bucket_dest} -> $3/$1/$2"
-docker run --rm --user $UID \
+docker run --rm --user $UID --cpuset-cpus="0" \
                       -e "PASSPHRASE=${passphrase}" \
                       -v "${DIR}/../volumes/app:/mnt/app" \
                       -v $3:/mnt/data \

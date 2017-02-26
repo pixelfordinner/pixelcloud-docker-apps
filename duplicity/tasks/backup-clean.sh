@@ -13,7 +13,7 @@ for client_dir in ${source_dir}/*/; do
         project_name=$(basename ${project_dir})
         bucket_dest=${bucket}/${client_name}/${project_name}
         echo "> ${project_name} -> [${full_backups}] -> ${bucket_dest}..."
-        docker run --rm --user $UID \
+        docker run --rm --user $UID --cpuset-cpus="0" \
                       -e "PASSPHRASE=${passphrase}" \
                       -v "${DIR}/../volumes/app:/mnt/app" \
                       --name pixelcloud-duplicity \
