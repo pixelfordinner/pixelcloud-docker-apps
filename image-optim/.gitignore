@@ -1,0 +1,2 @@
+tasks/conf/*
+!tasks/conf/settings.example.sh
