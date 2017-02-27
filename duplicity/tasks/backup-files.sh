@@ -25,7 +25,8 @@ for client_dir in ${source_dir}/*/; do
                       --name pixelcloud-duplicity \
                       pixelfordinner/duplicity \
                       ${backup_type} --allow-source-mismatch --archive-dir=/mnt/app \
-                      --exclude "/mnt/data/${client_name}/${project_name}/volumes/www/htdocs/content/cache/" \
+                      --exclude "/mnt/data/${client_name}/${project_name}/volumes/www/htdocs/content/cache" \
+                      --exclude "/mnt/data/${client_name}/${project_name}/volumes/data/composer" \
                       "/mnt/data/${client_name}/${project_name}" "${bucket_dest}"
 
         echo ">> ${project_name} -> ${bucket_dest} = Done."
