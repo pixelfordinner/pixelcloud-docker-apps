@@ -28,7 +28,7 @@ for client_dir in ${source_dir}/*/; do
 
           echo ">> ${project_name}'s images have been optimized."
       else
-          echo ">> Optimization directory doesn't exist: [${project_dir}/${optim_dir}]"
+          echo ">> Optimization directory doesn't exist: [${project_dir}${optim_dir}]"
       fi
 
       echo
