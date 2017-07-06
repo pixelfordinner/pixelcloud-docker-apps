@@ -6,8 +6,8 @@ services:
     container_name: pixelcloud-nginx_proxy-nginx
     restart: unless-stopped
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - "./volumes/conf.d:/etc/nginx/conf.d:ro"
       - "./volumes/vhost.d:/etc/nginx/vhost.d:ro"
