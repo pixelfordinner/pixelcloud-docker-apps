@@ -14,7 +14,7 @@ do
     $(which docker) exec $container mkdir -p ${dumps_dir}
     # Clear old dumps (> 1 month)
     echo ">> [${container}] Clearing old dumps..."
-    $(which docker) exec -it $container find ${dumps_dir} -type f -name '*.sql' -mtime +60 -delete
+    $(which docker) exec -it $container find ${dumps_dir} -type f -name '*.sql' -mtime +8 -delete
     echo ">> [${container}] Dumping database..."
     # Generate new dumnp
     $(which docker) exec $container wp db export ${dumps_dir}/$(date +%Y.%m.%d).sql
