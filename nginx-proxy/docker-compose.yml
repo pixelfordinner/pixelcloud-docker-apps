@@ -31,7 +31,7 @@ services:
       - proxy-tier
     entrypoint: /usr/local/bin/docker-gen -notify-sighup pixelcloud-nginx_proxy-nginx -watch -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
   lets-encrypt-companion:
-    image: jrcs/letsencrypt-nginx-proxy-companion:v1.5
+    image: jrcs/letsencrypt-nginx-proxy-companion:v1.6
     container_name: pixelcloud-nginx_proxy-lets_encrypt
     restart: unless-stopped
     depends_on:
