@@ -10,11 +10,19 @@ Thumbs.db
 .idea/
 
 ### nginx-proxy
-volumes/certs/*
-!volumes/certs/.gitkeep
+volumes/nginx/certs/*
+!volumes/nginx/certs/.gitkeep
 
-volumes/conf.d/*
-!volumes/conf.d/.gitkeep
+volumes/nginx/conf.d/*
+!volumes/nginx/conf.d/.gitkeep
 
-volumes/vhost.d/*
-!volumes/vhost.d/.gitkeep
+volumes/nginx/vhost.d/*
+!volumes/nginx/vhost.d/.gitkeep
+
+volumes/nginx/html/*
+!volumes/nginx/html/.gitkeep
+
+volumes/nginx/htpasswd/*
+!volumes/nginx/htpasswd/.gitkeep
+
+.env
