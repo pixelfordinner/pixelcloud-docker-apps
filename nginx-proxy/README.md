@@ -29,18 +29,9 @@ Development example:
 ```
 HTTP_PORT=8080:80
 HTTPS_PORT=8443:443
+ACME_CA_URI=https://acme-staging.api.letsencrypt.org/directory
 ```
 
 #### no-www
 
 If the variable ``WWW`` is set to ``no-www`` inside your proxied service, nginx-proxy will automatically create a www.domain.com to domain.com redirection. You should add www.domain.com to ``LETSENCRYPT_HOST`` variable to get an SSL certificate as well.
-
-#### ACME CA
-
-By default, this spin of nginx-proxy ships with the staging version of Let's Encrypt service enabled.
-
-To switch to production certificates, remove or comment this line in ``docker-compose.yml``
-
-```
-    ACME_CA_URI: https://acme-staging.api.letsencrypt.org/directory
-```
