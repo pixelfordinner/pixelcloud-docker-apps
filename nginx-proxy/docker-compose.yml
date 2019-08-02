@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nginx-web:
-    image: pixelfordinner/nginx:test
+    image: pixelfordinner/nginx
     labels:
         com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     container_name: app-pixelcloud-nginx_proxy-nginx
