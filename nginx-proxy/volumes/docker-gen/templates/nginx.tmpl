@@ -158,6 +158,11 @@ server {
 	{{ if $enable_ipv6 }}
 	listen [::]:80 {{ $default_server }};
 	{{ end }}
+
+        {{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
+        include {{ printf "/etc/nginx/vhost.d/%s" $host }};
+        {{ end }}
+
 	access_log /dev/stdout vhost;
 	return 301 https://$host$request_uri;
 }
@@ -231,6 +236,10 @@ server {
 	{{ end }}
 	access_log /dev/stdout vhost;
 
+        {{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
+        include {{ printf "/etc/nginx/vhost.d/%s" $host }};
+        {{ end }}
+
 	return 301 https://{{ $host }}$request_uri;
 }
 
@@ -255,6 +264,10 @@ server {
 	{{ if (exists (printf "/etc/nginx/certs/www.%s.chain.pem" $cert)) }}
 	ssl_trusted_certificate {{ printf "/etc/nginx/certs/www.%s.chain.pem" $cert }};
 	{{ end }}
+
+        {{ if (exists (printf "/etc/nginx/vhost.d/www.%s" $host)) }}
+        include {{ printf "/etc/nginx/vhost.d/www.%s" $host }};
+        {{ end }}
 
 	return 301 https://{{ $host }}$request_uri;
 }
@@ -339,6 +352,10 @@ server {
 	{{ else if (exists "/etc/nginx/vhost.d/default") }}
 	include /etc/nginx/vhost.d/default;
 	{{ end }}
+
+        {{ if (exists (printf "/etc/nginx/vhost.d/www.%s" $host)) }}
+        include {{ printf "/etc/nginx/vhost.d/www.%s" $host }};
+        {{ end }}
 
 	return 301 http://{{ $host }}$request_uri;
 }
