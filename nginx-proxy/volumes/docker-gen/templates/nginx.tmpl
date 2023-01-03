@@ -159,9 +159,19 @@ server {
 	listen [::]:80 {{ $default_server }};
 	{{ end }}
 
-        {{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
-        include {{ printf "/etc/nginx/vhost.d/%s" $host }};
-        {{ end }}
+	# Do not HTTPS redirect Let'sEncrypt ACME challenge
+	location ^~ /.well-known/acme-challenge/ {
+		auth_basic off;
+		auth_request off;
+		allow all;
+		root /usr/share/nginx/html;
+		try_files $uri =404;
+		break;
+	}
+
+	{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
+	include {{ printf "/etc/nginx/vhost.d/%s" $host }};
+	{{ end }}
 
 	access_log /dev/stdout vhost;
 	return 301 https://$host$request_uri;
@@ -236,9 +246,19 @@ server {
 	{{ end }}
 	access_log /dev/stdout vhost;
 
-        {{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
-        include {{ printf "/etc/nginx/vhost.d/%s" $host }};
-        {{ end }}
+	# Do not HTTPS redirect Let'sEncrypt ACME challenge
+	location ^~ /.well-known/acme-challenge/ {
+		auth_basic off;
+		auth_request off;
+		allow all;
+		root /usr/share/nginx/html;
+		try_files $uri =404;
+		break;
+	}
+
+	{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
+	include {{ printf "/etc/nginx/vhost.d/%s" $host }};
+	{{ end }}
 
 	return 301 https://{{ $host }}$request_uri;
 }
@@ -353,9 +373,9 @@ server {
 	include /etc/nginx/vhost.d/default;
 	{{ end }}
 
-        {{ if (exists (printf "/etc/nginx/vhost.d/www.%s" $host)) }}
-        include {{ printf "/etc/nginx/vhost.d/www.%s" $host }};
-        {{ end }}
+	{{ if (exists (printf "/etc/nginx/vhost.d/www.%s" $host)) }}
+	include {{ printf "/etc/nginx/vhost.d/www.%s" $host }};
+	{{ end }}
 
 	return 301 http://{{ $host }}$request_uri;
 }
