@@ -87,7 +87,7 @@ Once you have everything running, you can quickly check if everything works as i
 version: '3'
 
 services:
-  iamzob:
+  whoami:
     image: jwilder/whoami
     container_name: site-whoami-http
     environment:
@@ -95,11 +95,9 @@ services:
       - VIRTUAL_PORT=8000
       - LETSENCRYPT_HOST=mydomain.com
       - WWW='no-ww'
-    networks:
-      - proxy-tier
 
 networks:
-  proxy-tier:
+  default:
     name: nginx-proxy
     external: true
 ```
