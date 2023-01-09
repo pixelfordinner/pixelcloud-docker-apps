@@ -74,7 +74,7 @@ server {
 	access_log /dev/stdout vhost;
 	return 503;
 
-	include /etc/nginx/config/nginx-proxy.conf;
+	include /etc/nginx/config/profiles/proxy.conf;
 	ssl_certificate /etc/nginx/certs/default.crt;
 	ssl_certificate_key /etc/nginx/certs/default.key;
 }
@@ -191,7 +191,7 @@ server {
 	include /etc/nginx/network_internal.conf;
 	{{ end }}
 
-	include /etc/nginx/config/nginx-proxy.conf;
+	include /etc/nginx/config/profiles/proxy.conf;
 
 	ssl_certificate /etc/nginx/certs/{{ (printf "%s.crt" $cert) }};
 	ssl_certificate_key /etc/nginx/certs/{{ (printf "%s.key" $cert) }};
@@ -272,7 +272,7 @@ server {
 	{{ end }}
 	access_log /dev/stdout vhost;
 
-	include /etc/nginx/config/nginx-proxy.conf;
+	include /etc/nginx/config/profiles/proxy.conf;
 
 	ssl_certificate /etc/nginx/certs/{{ (printf "www.%s.crt" $cert) }};
 	ssl_certificate_key /etc/nginx/certs/{{ (printf "www.%s.key" $cert) }};
@@ -351,7 +351,7 @@ server {
 	access_log /dev/stdout vhost;
 	return 500;
 
-	include /etc/nginx/config/nginx-proxy.conf;
+	include /etc/nginx/config/profiles/proxy.conf;
 
 	ssl_certificate /etc/nginx/certs/default.crt;
 	ssl_certificate_key /etc/nginx/certs/default.key;
