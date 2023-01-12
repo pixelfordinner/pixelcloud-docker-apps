@@ -223,9 +223,16 @@ server {
 		proxy_pass {{ trim $proto }}://{{ trim $upstream_name }};
 		proxy_read_timeout 300;
 		{{ end }}
-
 		{{ if (exists (printf "/etc/nginx/htpasswd/%s" $host)) }}
-		auth_basic	"Restricted {{ $host }}";
+		satisfy    any;
+
+		# Allow local network to bypass auth (useful for proxied services loopback request)
+		allow      10.0.0.0/8;
+		allow      172.16.0.0/12;
+		allow      192.168.0.0/16;
+		deny       all;
+
+		auth_basic	"Pixelcloud {{ $host }}";
 		auth_basic_user_file	{{ (printf "/etc/nginx/htpasswd/%s" $host) }};
 		{{ end }}
 		{{ if (exists (printf "/etc/nginx/vhost.d/%s_location" $host)) }}
@@ -330,7 +337,15 @@ server {
 		proxy_read_timeout 300;
 		{{ end }}
 		{{ if (exists (printf "/etc/nginx/htpasswd/%s" $host)) }}
-		auth_basic	"Restricted {{ $host }}";
+		satisfy    any;
+
+		# Allow local network to bypass auth (useful for proxied services loopback request)
+		allow      10.0.0.0/8;
+		allow      172.16.0.0/12;
+		allow      192.168.0.0/16;
+		deny       all;
+
+		auth_basic	"Pixelcloud {{ $host }}";
 		auth_basic_user_file	{{ (printf "/etc/nginx/htpasswd/%s" $host) }};
 		{{ end }}
 		{{ if (exists (printf "/etc/nginx/vhost.d/%s_location" $host)) }}
