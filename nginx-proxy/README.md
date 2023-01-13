@@ -35,7 +35,6 @@ HTTPS_PORT=8443
 DEFAULT_EMAIL=my@email.com
 DEBUG=1
 ACME_CA_URI=https://acme-staging-v02.api.letsencrypt.org/directory
-
 ```
 
 #### no-www
@@ -62,17 +61,18 @@ You might need to run ``sudo ip6tables -t nat -A POSTROUTING -s fd00:dead:beef::
 Finally, you will need to enable some sort of IPv6 NAT. You can use [this repo](https://github.com/robbertkl/docker-ipv6nat) quickly: ``docker run -d --restart=always -v /var/run/docker.sock:/var/run/docker.sock:ro --cap-drop=ALL --cap-add=NET_RAW --cap-add=NET_ADMIN --cap-add=SYS_MODULE --net=host --name ipv6nat robbertkl/ipv6nat``, and it will take care of everything (don't forget to make it reboot-proof).
 
 You can also use Docker's official (and experimental) ``ip6tables`` support, by enabling it in dockerd's ``daemon.json``. Don't forget to also enable the ``experimental`` flag.
-If you choose this route, you may also want to disable Docker's userland-proxy.
+
+
+Depending on your use-case, you may also want to disable Docker's userland-proxy by adding ``"userland-proxy": false`` to your ``daemon.json`` file.
 
 Your ``daemon.json`` should look something like this:
 
 ```json
 {
-  "ipv6": true,
-  "fixed-cidr-v6": "fd00::/80",
-  "userland-proxy": false,
   "experimental": true,
-  "ip6tables": true
+  "ipv6": true,
+  "ip6tables": true,
+  "fixed-cidr-v6": "fd00::/80"
 }
 ```
 
@@ -106,7 +106,7 @@ Don't forget to replace ``mydomain.com`` with your actual domain/subdomain. You 
 
 Note that this example is not meant to test IPv6 connectivity.
 
-If everything worked, you should see some certificate files in the ``volumes/nginx/certs/`` folder. Please note that if you're running the staging ``ACME_CA_URI``, then the certificate won't be symlinked and therefore won't be loaded by docker-gen.
+If everything worked, you should see some certificate files in the ``volumes/nginx/certs/`` folder.
 
 After you've checked that certifiate generation works on staging, you can stop the nginx-proxy services, modify the ``.env`` file and comment the ``ACME_CA_URI`` line, which will switch to production CA.
 
