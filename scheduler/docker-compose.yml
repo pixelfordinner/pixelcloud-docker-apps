@@ -3,6 +3,7 @@ version: '3.7'
 services:
   scheduler:
     restart: unless-stopped
+    container_name: app-pixelcloud-scheduler
     image: pixelfordinner/ofelia
     command: daemon
     volumes:
