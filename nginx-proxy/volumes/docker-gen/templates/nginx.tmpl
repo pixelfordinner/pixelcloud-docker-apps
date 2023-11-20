@@ -116,7 +116,6 @@ server {
 	http2  on;
 	{{ if $enable_ipv6 }}
 	listen [::]:443 ssl deferred;
-	http2  on;
 	{{ end }}
 	access_log /dev/stdout vhost;
 	return 503;
@@ -217,7 +216,6 @@ server {
 	http2  on;
 	{{ if $enable_ipv6 }}
 	listen [::]:443 ssl {{ $default_server }};
-	http2  on;
 	{{ end }}
 	access_log /dev/stdout vhost;
 
@@ -315,7 +313,6 @@ server {
 	http2  on;
 	{{ if $enable_ipv6 }}
 	listen [::]:443 ssl {{ $default_server }};
-	http2  on;
 	{{ end }}
 	access_log /dev/stdout vhost;
 
@@ -406,7 +403,6 @@ server {
 	http2  on;
 	{{ if $enable_ipv6 }}
 	listen [::]:443 ssl {{ $default_server }};
-	http2  on;
 	{{ end }}
 	access_log /dev/stdout vhost;
 	return 500;
