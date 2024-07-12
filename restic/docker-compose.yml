@@ -1,0 +1,17 @@
+services:
+  restic:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - RCLONE_TAG=${RCLONE_TAG}
+        - RESTIC_TAG=${RESTIC_TAG}
+    environment:
+      - RESTIC_PASSWORD_FILE=/root/.config/restic/password
+    env_file:
+      - .env.restic
+    volumes:
+      - ./volumes/conf/rclone:/root/.config/rclone:rw
+      - ./volumes/cache/:/root/.cache/:rw
+      - ./volumes/secrets/${RESTIC_PASSWORD_FILE}:/root/.config/restic/password:ro
+      - ./volumes/conf/restic/exclude/${RESTIC_EXCLUDE_FILE}:/root/.config/restic/exclude:ro

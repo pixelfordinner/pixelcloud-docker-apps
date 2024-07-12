@@ -1,0 +1,5 @@
+*
+!restic
+!restic/exclude/
+!restic/exclude/*
+!.gitignore

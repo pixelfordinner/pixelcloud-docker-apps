@@ -1,0 +1,18 @@
+### Misc
+**/.DS_Store
+**/Thumbs.db
+
+### IDE
+**/*.idea
+**/*.vscode
+
+### PHPCS
+**/cs_fixer*
+**/.php_cs.cache
+
+### Dev files
+**/node_modules
+
+### Caches
+volumes/www/htdocs/content/cache
+volumes/data/composer
