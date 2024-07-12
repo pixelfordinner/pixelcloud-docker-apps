@@ -1,8 +1,6 @@
-version: '3'
-
 services:
   docker-gen:
-    image: nginxproxy/docker-gen
+    image: nginxproxy/docker-gen:${DOCKERGEN_TAG:-latest}
     command: -notify-sighup app-pixelcloud-nginxproxy-nginx -watch -wait 500ms:3s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     container_name: app-pixelcloud-nginxproxy-dgen
     restart: unless-stopped
@@ -21,7 +19,7 @@ services:
         max-file: '10'
 
   nginx:
-    image: pixelfordinner/nginx
+    image: pixelfordinner/nginx:${NGINX_TAG:-latest}
     container_name: app-pixelcloud-nginxproxy-nginx
     restart: unless-stopped
     depends_on:
@@ -44,7 +42,7 @@ services:
         max-file: '10'
 
   acme-companion:
-    image: nginxproxy/acme-companion
+    image: nginxproxy/acme-companion:${COMPANION_TAG:-latest}
     container_name: app-pixelcloud-nginxproxy-acme
     restart: unless-stopped
     depends_on:
