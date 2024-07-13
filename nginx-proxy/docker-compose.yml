@@ -61,6 +61,7 @@ services:
       ACME_CA_URI: ${ACME_CA_URI:-}
       DEFAULT_EMAIL: ${DEFAULT_EMAIL}
       DEBUG: ${DEBUG:-0}
+      ACME_HTTP_CHALLENGE_LOCATION: true
     logging:
       options:
         max-size: '4m'

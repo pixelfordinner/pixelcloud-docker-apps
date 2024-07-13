@@ -84,8 +84,6 @@ Once you have everything running, you can quickly check if everything works as i
 
 
 ```yaml
-version: '3'
-
 services:
   whoami:
     image: jwilder/whoami
@@ -94,7 +92,7 @@ services:
       - VIRTUAL_HOST=mydomain.com
       - VIRTUAL_PORT=8000
       - LETSENCRYPT_HOST=mydomain.com
-      - WWW='no-ww'
+      - WWW=no-ww
 
 networks:
   default:
