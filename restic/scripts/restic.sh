@@ -100,7 +100,7 @@ case "$1" in
         REPO=$2
         shift 2
         docker compose run --rm \
-            -e RESTIC_REPOSITORY="$REPO" \
+            -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${2}" \
             restic forget "$@"
         ;;
 
