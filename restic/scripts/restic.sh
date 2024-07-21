@@ -5,12 +5,11 @@ if [ -f ../.env.restic ]; then
     export $(grep -v '^#' ../.env.restic | xargs)
 fi
 
-# Function to display help
 show_help() {
     echo "Usage: $0 <command> [arguments]"
     echo
     echo "Commands:"
-    echo "  init <repository>              Initialize a new repository"
+    echo "  init <repository>              Initialize a new sub-repository"
     echo "  backup <repository> <path>     Backup a directory"
     echo "  restore <repository> <snapshot> <path>  Restore a snapshot"
     echo "  snapshots <repository>              List snapshots in a repository"
@@ -20,12 +19,12 @@ show_help() {
     echo "  help                           Show this help message"
     echo
     echo "Examples:"
-    echo "  $0 init rclone:dropbox:backup"
-    echo "  $0 backup rclone:dropbox:backup /home/user/Documents"
-    echo "  $0 restore rclone:dropbox:backup latest /home/user/Restore"
-    echo "  $0 snapshots rclone:dropbox:backup"
-    echo "  $0 check rclone:dropbox:backup"
-    echo "  $0 forget rclone:dropbox:backup --keep-last 7 --prune"
+    echo "  $0 init repo"
+    echo "  $0 backup repo /home/user/Documents"
+    echo "  $0 restore repo latest /home/user/Restore"
+    echo "  $0 snapshots repo"
+    echo "  $0 check repo"
+    echo "  $0 forget repo --keep-last 7 --prune"
     echo "  $0 version"
     echo
     echo "Note: For Dropbox, use 'rclone:dropbox:path' as the repository."
@@ -55,10 +54,13 @@ case "$1" in
             echo "Usage: $0 backup <repository> <path>"
             exit 1
         fi
+        REPO=$2
+        HOST_PATH=$3
+        shift 3
         docker compose run --rm \
-            -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${2}" \
-            -v "$3:/data:ro" \
-            restic backup --exclude-file /root/.config/restic/exclude /data
+            -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${$REPO}" \
+            -v "$HOST_PATH:/data:ro" \
+            restic backup --exclude-file /root/.config/restic/exclude /data "$@"
         ;;
 
     restore)
@@ -100,7 +102,7 @@ case "$1" in
         REPO=$2
         shift 2
         docker compose run --rm \
-            -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${2}" \
+            -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${$REPO}" \
             restic forget "$@"
         ;;
 
