@@ -6,6 +6,7 @@ services:
       args:
         - RCLONE_TAG=${RCLONE_TAG}
         - RESTIC_TAG=${RESTIC_TAG}
+    hostname: ${HOSTNAME}
     environment:
       - RESTIC_PASSWORD_FILE=/root/.config/restic/password
     env_file:

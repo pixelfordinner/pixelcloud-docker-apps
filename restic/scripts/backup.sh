@@ -84,11 +84,30 @@ execute_forget_command() {
 
     if [ -n "$forget_policy" ]; then
         log "Executing forget command with policy: $forget_policy" "$container_name"
-        ./restic.sh forget "$repository" $forget_policy
-        if [ $? -eq 0 ]; then
-            log "Forget command completed successfully" "$container_name"
+
+        forget_summary=$(./restic.sh forget "$repository" $forget_policy --json | jq -r '
+            def sum(f): reduce .[] as $x (0; . + ($x | f));
+            if length == 0 then
+                "No snapshots matched the forget policy"
+            else
+                "Hosts affected: \(map(.host) | unique | join(", "))\n" +
+                "Total snapshots kept: \(sum(.keep | length))\n" +
+                if sum(.remove | length) > 0 then
+                    "Total snapshots removed: \(sum(.remove | length))\n" +
+                    "Total size freed: \(sum(.remove_size // 0) | . / 1024 / 1024 | floor) MiB"
+                else
+                    "No snapshots were removed"
+                end
+            end
+        ')
+
+        if [ -n "$forget_summary" ]; then
+            log "Forget command completed. Summary:" "$container_name"
+            echo "$forget_summary" | while IFS= read -r line; do
+                log "## $line" "$container_name"
+            done
         else
-            log "Forget command failed" "$container_name"
+            log "Forget command failed or produced no summary" "$container_name"
         fi
     else
         log "No forget policy specified, skipping forget command" "$container_name"

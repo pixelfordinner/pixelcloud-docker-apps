@@ -50,7 +50,7 @@ case "$1" in
         ;;
 
     backup)
-        if [ $# -ne 3 ]; then
+        if [ $# -lt 3 ]; then
             echo "Usage: $0 backup <repository> <path>"
             exit 1
         fi
@@ -58,8 +58,8 @@ case "$1" in
         HOST_PATH=$3
         shift 3
         docker compose run --rm \
-            -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${$REPO}" \
-            -v "$HOST_PATH:/data:ro" \
+            -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${REPO}" \
+            -v "${HOST_PATH}:/data:ro" \
             restic backup --exclude-file /root/.config/restic/exclude /data "$@"
         ;;
 
@@ -102,7 +102,7 @@ case "$1" in
         REPO=$2
         shift 2
         docker compose run --rm \
-            -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${$REPO}" \
+            -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${REPO}" \
             restic forget "$@"
         ;;
 
