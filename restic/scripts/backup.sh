@@ -106,6 +106,19 @@ execute_forget_command() {
             echo "$forget_summary" | while IFS= read -r line; do
                 log "## $line" "$container_name"
             done
+
+            log "Executing prune command" "$container_name"
+            prune_output=$(./restic.sh prune "$repository")
+
+            if [ -n "$prune_output" ]; then
+                log "Prune command completed. Summary:" "$container_name"
+                echo "$prune_output" | while IFS= read -r line; do
+                    log "## $line" "$container_name"
+                done
+            else
+                log "Prune command failed or produced no output" "$container_name"
+            fi
+
         else
             log "Forget command failed or produced no summary" "$container_name"
         fi
@@ -141,7 +154,7 @@ if ! docker info >/dev/null 2>&1; then
 fi
 
 # Get all running containers with the specified label
-containers=$(docker ps --filter "label=pixelcloud.restic.backup.candidate=true" --format "{{.ID}}")
+containers=$(docker ps --filter "label=pixelcloud.restic.backup.enabled=true" --format "{{.ID}}")
 
 container_count=$(echo "$containers" | wc -w | xargs)
 log "Found $container_count containers to process"
@@ -164,9 +177,9 @@ for container in $containers; do
     log "Processing container $current_container of $container_count" "$container_name"
 
     # Check and execute pre-backup command
-    pre_command=$(docker inspect --format '{{index .Config.Labels "pixelcloud.restic.backup.command.pre"}}' "$container")
-    if [ -n "$pre_command" ]; then
-        execute_timed_command "$container" "$pre_command" "pre-backup" "$container_name"
+    before_command=$(docker inspect --format '{{index .Config.Labels "pixelcloud.restic.backup.run.before"}}' "$container")
+    if [ -n "$before_command" ]; then
+        execute_timed_command "$container" "$before_command" "before backup" "$container_name"
     fi
 
     # Get repository from label
@@ -232,9 +245,9 @@ for container in $containers; do
     fi
 
     # Check and execute post-backup command
-    post_command=$(docker inspect --format '{{index .Config.Labels "pixelcloud.restic.backup.command.post"}}' "$container")
-    if [ -n "$post_command" ]; then
-        execute_timed_command "$container" "$post_command" "post-backup" "$container_name"
+    after_command=$(docker inspect --format '{{index .Config.Labels "pixelcloud.restic.backup.run.after"}}' "$container")
+    if [ -n "$after_command" ]; then
+        execute_timed_command "$container" "$after_command" "after backup" "$container_name"
     fi
 
     log "Finished processing" "$container_name"

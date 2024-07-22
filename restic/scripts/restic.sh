@@ -15,6 +15,7 @@ show_help() {
     echo "  snapshots <repository>              List snapshots in a repository"
     echo "  check <repository>             Check repository for errors"
     echo "  forget <repository> [flags]    Forget old snapshots"
+    echo "  prune <repository> [flags]     Forget old snapshots"
     echo "  version                        Show Restic version"
     echo "  help                           Show this help message"
     echo
@@ -104,6 +105,18 @@ case "$1" in
         docker compose run --rm \
             -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${REPO}" \
             restic forget "$@"
+        ;;
+
+    prune)
+        if [ $# -lt 2 ]; then
+            echo "Usage: $0 prune <repository> [flags]"
+            exit 1
+        fi
+        REPO=$2
+        shift 2
+        docker compose run --rm \
+            -e RESTIC_REPOSITORY="${RESTIC_BASE_REPO}/${REPO}" \
+            restic prune "$@"
         ;;
 
     version)
